@@ -1,0 +1,166 @@
+package project2_javainterview;
+import java.sql.*;
+import java.util.*;
+//import com.mysql.jdbc.PreparedStatement;
+public class Interview {
+	Scanner s=new Scanner(System.in);
+	Connection con;
+	String name,email;
+	int score;
+	int count=0;
+	public void connect() {
+		String url="jdbc:mysql://localhost:3306/quiz";
+		String dbname="quiz";
+		String driver="com.mysql.jdbc.Driver";
+		String username="root";
+		String pass="";
+		
+		try {
+			Class.forName(driver);
+		} catch (ClassNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		try {
+		con=DriverManager.getConnection(url,username,pass);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		System.out.println("Database connected");
+	}
+	
+	public void write() {
+		System.out.println("Enterr the following details: \n 1. Name\n 2. Email Id");
+		this.name=s.nextLine();
+		email=s.nextLine();
+		
+		
+		java.sql.PreparedStatement ps=null;
+		String query="Insert into userz(name,email) values(?,?)";
+		try {
+			ps=con.prepareStatement(query);
+			ps.setString(1, name);
+			ps.setString(2, email);
+			
+			
+			if(ps.execute()) {
+				System.out.println("error");
+			}else {
+				System.out.println("Data Stored");
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+			
+	}
+	
+	public void questions() {
+		int n=1, a;
+		
+		System.out.println("Welcome to Interview");
+		System.out.println("1 for taking the demo quiz ");
+		System.out.println("2 for taking the interview ");
+		System.out.println("Select as per your desire ");
+		while(n==1) {
+			a=s.nextInt();
+			if(a==1) {
+System.out.println("You have entered the demo section ");
+System.out.println("You would be given a question along with three options ");
+System.out.println("only one would be correct ");
+System.out.println("Demo Question: Which of the following option leads to the portability"
+		+ "and security of Java?");
+System.out.println("The options are \n 1.Bytecode is executed by JVM"
+		+ "\n 2.Use of exception handling"
+		+ "\n 3.None");
+System.out.println("Enter one option :");
+int b=s.nextInt();
+if(b==1) {
+	System.out.println("Congrats you have answered correctly!");
+}
+else {
+	System.out.println("Answer is wrong, demo is over");
+}
+	}
+			else if(a==2){
+				System.out.println("You have entered the real quiz ");
+				System.out.println("You would be given with three questions "
+						+ "based on java programming, out of which only one "
+						+ " is correct");
+				System.out.println("Question 1."
+						+ "Which of the following is not a Java feature?");
+				System.out.println("1.Dynamic \n 2. Architecture Neutral"
+						+ " \n 3. Use of pointers");
+				System.out.println("Enter one option");		
+				int ch=s.nextInt();
+				if(ch==3) {
+					count=count+10;
+					System.out.println("Correct answer, your score is  "+ count);
+				}
+				else {
+					System.out.println("wrong answer! you cannot proceed further ");
+				break;
+				}
+					
+				System.out.println("Question 2.Which of the following is a valid long literal"
+						+ "?");
+				System.out.println("1.ABH8097 \n 2.0xnf029L "
+						+ " \n 3. 904423");
+				System.out.println("Enter one option");		
+				int ch2=s.nextInt();
+				if(ch2==2) {
+					count=count+10;
+					System.out.println("Correct answer, your score is  "+ count);
+				}
+				else {
+					System.out.println("wrong answer! you cannot proceed further ");
+				break;
+			}
+System.out.println("Question 3.Which of the following is not OOPS concept in Java?");
+System.out.println("1.Abstraction \n 2.Polymorphism "
+		+ " \n 3. Compilation");
+System.out.println("Enter one option");	
+int ch3=s.nextInt();
+if(ch3==3) {
+	count=count+10;
+	System.out.println("Correct answer, your score is  "+ count+" you have completed"
+			+" the interview");
+}
+else {
+	System.out.println("wrong answer! you cannot proceed further ");
+break;
+}
+		}
+	}n=0;
+	
+	
+	
+		java.sql.PreparedStatement ps=null;
+		
+		String query="update userz set score=? where name=?";
+		
+		try {
+			ps=con.prepareStatement(query);
+			ps.setInt(1, count);
+			//ps.setString(2, name);
+			
+			ps.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	   
+	
+	public static void main(String args[]) {
+		Interview i=new Interview();
+		i.connect();
+		i.write();
+		i.questions();
+		
+	}
+}
